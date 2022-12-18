@@ -58,4 +58,6 @@ if __name__ == "__main__":
     s_mark = sort_mark(df, 0)
     s_par = sort_par(df, 1, 300, 480)
 
-    print(s_par)
+    df["size"] = df["height"] * df["width"] * df["depth"]
+    result = df.groupby("mark").agg({"size": ["mean", "min", "max"]})
+    print(result)
