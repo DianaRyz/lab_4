@@ -64,18 +64,34 @@ if __name__ == "__main__":
     df = df.rename(columns={"Absolute way": "absolute way"})
     df = df.rename(columns={"Class": "class"})
     df = df.drop(["Relative way"], axis=1)
+    print("\033[32m{}\033[0m".format("DataFrame"))
+    print(df)
 
     df["mark"] = df.apply(mark_class, axis=1)
+    print("\033[32m{}\033[0m".format("DataFrame with mark"))
+    print(df)
 
     df["height"] = df.apply(height, axis=1)
     df["width"] = df.apply(width, axis=1)
     df["depth"] = df.apply(depth, axis=1)
+    print("\033[32m{}\033[0m".format("DataFrame with size"))
+    print(df)
+
     st = df.describe()
+    print("\033[32m{}\033[0m".format("Statistics"))
+    print(st)
+
     s_mark = sort_mark(df, 0)
+    print("\033[32m{}\033[0m".format("Sorted by mark"))
+    print(s_mark)
     s_par = sort_par(df, 1, 300, 480)
+    print("\033[32m{}\033[0m".format("Sorted by size"))
+    print(s_par)
 
     df["size"] = df["height"] * df["width"] * df["depth"]
     result = df.groupby("mark").agg({"size": ["mean", "min", "max"]})
+    print("\033[32m{}\033[0m".format("Max filter"))
+    print(result)
 
     h_1, h_2, h_3 = histogram(df, 0)
     i = random.randint(0, 1100)
