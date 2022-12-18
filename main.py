@@ -37,6 +37,12 @@ def sort_mark(dframe, mark: int):
     return dframe
 
 
+def sort_par(dframe, mark, max_height, max_width):
+    """Create new dataframe filtered by mark and size"""
+    dframe = df[(dframe.mark == mark) & (dframe.height <= max_height) & (dframe.width <= max_width)]
+    return dframe
+
+
 if __name__ == "__main__":
     df = pd.read_csv("dataset.csv", sep=";")
     df = df.rename(columns={"Absolute way": "absolute way"})
@@ -48,6 +54,8 @@ if __name__ == "__main__":
     df["height"] = df.apply(height, axis=1)
     df["width"] = df.apply(width, axis=1)
     df["depth"] = df.apply(depth, axis=1)
-    df.describe()
+    st = df.describe()
+    s_mark = sort_mark(df, 0)
+    s_par = sort_par(df, 1, 300, 480)
 
-    print(sort_mark(df, 0))
+    print(s_par)
