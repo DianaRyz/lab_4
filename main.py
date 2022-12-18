@@ -39,4 +39,7 @@ if __name__ == "__main__":
     df["width"] = df.apply(width, axis=1)
     df["depth"] = df.apply(depth, axis=1)
 
-    print(df)
+    """statistical data"""
+    print(df.describe())
+
+
