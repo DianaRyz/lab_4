@@ -1,5 +1,7 @@
 import pandas as pd
 import cv2
+import matplotlib.pyplot as plt
+import random
 
 
 def mark_class(row) -> int:
@@ -43,6 +45,20 @@ def sort_par(dframe, mark, max_height, max_width):
     return dframe
 
 
+def histogram(dframe, mark: int) -> tuple:
+    """Histogram"""
+    dfr = sort_mark(dframe, mark)
+    list1 = []
+    list2 = []
+    list3 = []
+    for index in dfr.index:
+        image = cv2.imread(dfr["absolute way"].loc[dfr.index[index]])
+        list1.append(cv2.calcHist([image], [0], None, [256], [0, 256]))
+        list2.append(cv2.calcHist([image], [1], None, [256], [0, 256]))
+        list3.append(cv2.calcHist([image], [2], None, [256], [0, 256]))
+    return list1, list2, list3
+
+
 if __name__ == "__main__":
     df = pd.read_csv("dataset.csv", sep=";")
     df = df.rename(columns={"Absolute way": "absolute way"})
@@ -60,4 +76,17 @@ if __name__ == "__main__":
 
     df["size"] = df["height"] * df["width"] * df["depth"]
     result = df.groupby("mark").agg({"size": ["mean", "min", "max"]})
-    print(result)
+
+    h_1, h_2, h_3 = histogram(df, 0)
+    i = random.randint(0, 1100)
+    num = str(i)
+    plt.plot(h_1[i], color="blue")
+    plt.xlim([0, 256])
+    plt.plot(h_2[i], color="green")
+    plt.xlim([0, 256])
+    plt.plot(h_3[i], color="red")
+    plt.xlim([0, 256])
+    plt.title("Histogram image No." + num)
+    plt.ylabel("Pixel value")
+    plt.xlabel("Count")
+    plt.show()
